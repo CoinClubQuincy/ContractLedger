@@ -6,7 +6,7 @@ contract LedgerContract is ERC1155{
     string public name;
     bool public status;
     uint public contractCount = 0;
-    uint keyToken;
+    uint public ledgerKeyToken;
 
     mapping(uint => Ledger) ledger;
     struct Ledger{
@@ -18,19 +18,19 @@ contract LedgerContract is ERC1155{
     constructor(string memory _name,bool _contractStatus,uint _totalKeys,uint keyID,string memory _URI)ERC1155(_URI){
         name = _name;
         status = _contractStatus;
-        keyToken = keyID;
+        ledgerKeyToken = keyID;
         //create Ledger editor key
-        _mint(msg.sender,keyToken, _totalKeys, "");
+        _mint(msg.sender,ledgerKeyToken, _totalKeys, "");
     }
-    //check to 
+    //check token permissions
     modifier checkPermissions(){
             checkContractStatus();   
         _;
     }
     //Checks to see if contract is owned by a token or its self
-    function checkContractStatus()internal returns(bool){
+    function checkContractStatus()internal view {
         if(status == false){
-            require(balanceOf(msg.sender,keyToken) > 0);
+            require(balanceOf(msg.sender,ledgerKeyToken) > 0);
         } else {
             require(msg.sender == address(this), "only the contract can add to the ledger");
         }
@@ -42,7 +42,7 @@ contract LedgerContract is ERC1155{
     //Internal function to add to the ldeger based on additional code
     function _addContract(address[] memory _contract)internal returns(uint){
         ledger[contractCount] = Ledger(_contract,block.timestamp,contractCount,true);
-        contractCount++;
+        return contractCount++;
     }  
     //View leder by ID#
     function viewLedgerID(uint _ID)public view returns(address[] memory,uint,uint,bool){
