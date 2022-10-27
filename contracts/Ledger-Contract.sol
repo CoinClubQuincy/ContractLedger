@@ -3,7 +3,6 @@ pragma solidity ^0.8.10;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 contract LedgerContract {
-    string public name;
     uint public contractCount = 0;
 
     mapping(uint => Ledger) ledger;
@@ -12,9 +11,6 @@ contract LedgerContract {
         uint TimeStamp;
         uint ID;
         bool Exist;
-    }
-    constructor(string memory _name){
-        name = _name;
     }
     //Internal function to add to the ldeger based on additional code
     function addContract(address[] memory _contract)internal returns(uint){
