@@ -2,7 +2,7 @@ pragma solidity ^0.8.10;
 // SPDX-License-Identifier: MIT
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
-contract LedgerContract is ERC1155{
+contract LedgerUser is ERC1155{
     string public name;
     uint public contractCount = 0;
     uint public ledgerKeyToken;
