@@ -19,20 +19,24 @@ contract LedgerContract is ERC1155{
         name = _name;
         status = _contractStatus;
         ledgerKeyToken = keyID;
-        //create Ledger editor key
-        _mint(msg.sender,ledgerKeyToken, _totalKeys, "");
+        CreateEditorToken(_totalKeys);
     }
     //check token permissions
     modifier checkPermissions(){
             checkContractStatus();   
         _;
     }
+    function CreateEditorToken(uint _totalKeys)internal {
+        if(status == false){
+            _mint(msg.sender,ledgerKeyToken, _totalKeys, "");
+        }    
+    }
     //Checks to see if contract is owned by a token or its self
     function checkContractStatus()internal view {
         if(status == false){
             require(balanceOf(msg.sender,ledgerKeyToken) > 0);
         } else {
-            require(msg.sender == address(this), "only the contract can add to the ledger");
+            require(1 == 0,"only the contract can add to the ledger");
         }
     }
     //Public function to Add a new contract to the ledger
