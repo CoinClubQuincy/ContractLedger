@@ -24,8 +24,8 @@ contract LedgerContract {
 }
 
 //Token Ledger (uint)
-contract LedgerContractInt {
-    uint public contractCount = 0;
+contract LedgerContractToken {
+    uint public setCount = 0;
 
     mapping(uint => Ledger) ledger;
     struct Ledger{
@@ -36,8 +36,8 @@ contract LedgerContractInt {
     }
     //Internal function to add to the ldeger based on additional code
     function addTokenInt(uint[] memory _token)internal returns(uint){
-        ledger[contractCount] = Ledger(_token,block.timestamp,contractCount,true);
-        return contractCount++;
+        ledger[setCount] = Ledger(_token,block.timestamp,setCount,true);
+        return setCount++;
     }  
     //View leder by ID#
     function viewIntLedgerID(uint _ID)public view returns(uint[] memory,uint,uint,bool){
@@ -47,7 +47,7 @@ contract LedgerContractInt {
 
 //Address Data Ledger (String)
 contract LedgerContractData {
-    uint public contractCount = 0;
+    uint public setCount = 0;
 
     mapping(uint => Ledger) ledger;
     struct Ledger{
@@ -58,8 +58,8 @@ contract LedgerContractData {
     }
     //Internal function to add to the ldeger based on additional code
     function addData(string[] memory _data)internal returns(uint){
-        ledger[contractCount] = Ledger(_data,block.timestamp,contractCount,true);
-        return contractCount++;
+        ledger[setCount] = Ledger(_data,block.timestamp,setCount,true);
+        return setCount++;
     }  
     //View leder by ID#
     function viewDataLedgerID(uint _ID)public view returns(string[] memory,uint,uint,bool){
