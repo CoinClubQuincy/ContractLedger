@@ -6,6 +6,7 @@ contract LedgerUser is ERC1155{
     string public name;
     uint public contractCount = 0;
     uint public ledgerKeyToken;
+    event ContractsAdded(uint indexed _ID);
 
     mapping(uint => Ledger) ledger;
     struct Ledger{
@@ -15,18 +16,21 @@ contract LedgerUser is ERC1155{
         bool Exist;
     }
     constructor(string memory _name,uint _totalKeys,uint keyID,string memory _URI)ERC1155(_URI){
+        require(_totalKeys > 0, "at least one key is required");
         name = _name;
         ledgerKeyToken = keyID;
         _mint(msg.sender,ledgerKeyToken, _totalKeys, "");
     }
     //check token permissions
     modifier checkPermissions(){
-            require(balanceOf(msg.sender,ledgerKeyToken) > 0);
+            require(balanceOf(msg.sender,ledgerKeyToken) > 0, "you must hold a key");
         _;
     }
-    //Internal function to add to the ldeger based on additional code
+    //Key holders can add to the ledger. The ID is returned and emitted, since a wallet cannot read a return value
     function addContract(address[] memory _contract)public checkPermissions returns(uint){
+        require(_contract.length > 0, "no addresses were given");
         ledger[contractCount] = Ledger(_contract,block.timestamp,contractCount,true);
+        emit ContractsAdded(contractCount);
         return contractCount++;
     }  
     //View leder by ID#

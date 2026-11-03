@@ -1,9 +1,10 @@
 pragma solidity ^0.8.10;
 // SPDX-License-Identifier: MIT
 
-//Address Ledger 
-contract LedgerContract {
+//Address Ledger. Inherit this and decide who may call addContract
+abstract contract LedgerContract {
     uint public contractCount = 0;
+    event ContractsAdded(uint indexed _ID);
 
     mapping(uint => Ledger) ledger;
     struct Ledger{
@@ -14,7 +15,9 @@ contract LedgerContract {
     }
     //Internal function to add to the ldeger based on additional code
     function addContract(address[] memory _contract)internal returns(uint){
+        require(_contract.length > 0, "no addresses were given");
         ledger[contractCount] = Ledger(_contract,block.timestamp,contractCount,true);
+        emit ContractsAdded(contractCount);
         return contractCount++;
     }  
     //View leder by ID#
@@ -23,9 +26,10 @@ contract LedgerContract {
     } 
 }
 
-//Token Ledger (uint)
-contract LedgerContractToken {
+//Token Ledger (uint). Inherit this and decide who may call addTokenInt
+abstract contract LedgerContractToken {
     uint public setCount = 0;
+    event TokensAdded(uint indexed _ID);
 
     mapping(uint => Ledger) ledger;
     struct Ledger{
@@ -36,7 +40,9 @@ contract LedgerContractToken {
     }
     //Internal function to add to the ldeger based on additional code
     function addTokenInt(uint[] memory _token)internal returns(uint){
+        require(_token.length > 0, "no tokens were given");
         ledger[setCount] = Ledger(_token,block.timestamp,setCount,true);
+        emit TokensAdded(setCount);
         return setCount++;
     }  
     //View leder by ID#
@@ -45,9 +51,10 @@ contract LedgerContractToken {
     } 
 }
 
-//Address Data Ledger (String)
-contract LedgerContractData {
+//Address Data Ledger (String). Inherit this and decide who may call addData
+abstract contract LedgerContractData {
     uint public setCount = 0;
+    event DataAdded(uint indexed _ID);
 
     mapping(uint => Ledger) ledger;
     struct Ledger{
@@ -58,7 +65,9 @@ contract LedgerContractData {
     }
     //Internal function to add to the ldeger based on additional code
     function addData(string[] memory _data)internal returns(uint){
+        require(_data.length > 0, "no data was given");
         ledger[setCount] = Ledger(_data,block.timestamp,setCount,true);
+        emit DataAdded(setCount);
         return setCount++;
     }  
     //View leder by ID#
